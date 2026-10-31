@@ -43,7 +43,7 @@ services:
       - key: GOOGLE_REDIRECT_URI # https://<service>.onrender.com/api/v1/auth/google/callback
         sync: false
       - key: FRONTEND_URL
-        sync: false
+        value: https://wage3-frontend.vercel.app
 
       - key: RPC_URL
         sync: false

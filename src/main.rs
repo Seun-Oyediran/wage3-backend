@@ -1,10 +1,16 @@
 use std::{net::SocketAddr, time::Duration};
 
-use axum::Router;
+use axum::{
+    Router,
+    http::{
+        HeaderValue, Method,
+        header::{AUTHORIZATION, CONTENT_TYPE},
+    },
+};
 use dotenvy::dotenv;
 use sqlx::postgres::PgPoolOptions;
 use tower::ServiceBuilder;
-use tower_http::trace::TraceLayer;
+use tower_http::{cors::CorsLayer, trace::TraceLayer};
 use tracing_subscriber::EnvFilter;
 
 use crate::{
@@ -70,6 +76,26 @@ async fn main() {
         .await
         .expect("Failed to set up Google sign-in");
 
+    // Browsers send Origin without a trailing slash, so FRONTEND_URL must match that.
+    let frontend_origin = config
+        .frontend_url
+        .trim_end_matches('/')
+        .parse::<HeaderValue>()
+        .expect("FRONTEND_URL is not a valid origin");
+
+    // Auth is a Bearer header, not cookies, so credentials stay off.
+    let cors = CorsLayer::new()
+        .allow_origin(frontend_origin)
+        .allow_methods([
+            Method::GET,
+            Method::POST,
+            Method::PUT,
+            Method::PATCH,
+            Method::DELETE,
+        ])
+        .allow_headers([AUTHORIZATION, CONTENT_TYPE])
+        .max_age(Duration::from_secs(60 * 60));
+
     let state = AppState::new(config, pool, google);
 
     let tracing_layer = ServiceBuilder::new().layer(TraceLayer::new_for_http());
@@ -78,8 +104,8 @@ async fn main() {
         .nest("/api", app_routes())
         .layer(tracing_layer)
         .with_state(state)
-        .fallback(not_found);
-    // .layer(cors);
+        .fallback(not_found)
+        .layer(cors);
 
     let listener = tokio::net::TcpListener::bind(("0.0.0.0", port))
         .await
