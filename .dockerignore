@@ -1,0 +1,7 @@
+target
+frontend
+.env
+.env.*
+test.http
+.git
+.DS_Store

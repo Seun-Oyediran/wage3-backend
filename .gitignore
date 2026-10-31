@@ -1,0 +1,14 @@
+/target
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Holds real access tokens
+test.http
+
+.DS_Store
+
+# Next.js frontend, kept out of this repo
+/frontend

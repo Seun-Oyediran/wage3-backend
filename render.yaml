@@ -1,0 +1,64 @@
+# Render Blueprint: one Postgres database + the Rust API built from the Dockerfile.
+# Render → New → Blueprint → pick this repo. Values marked `sync: false`
+# are asked for once in the dashboard and never stored in git.
+
+databases:
+  - name: wage3-db
+    databaseName: wage3
+    user: wage3
+    plan: free # free databases expire after 30 days; use basic-256mb to keep data
+    region: frankfurt
+    postgresMajorVersion: "15"
+
+services:
+  - type: web
+    name: wage3-api
+    runtime: docker
+    plan: free
+    region: frankfurt # must match the database to use its internal URL
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/v1/status
+    envVars:
+      # Internal URL: private network, no SSL needed
+      - key: DATABASE_URL
+        fromDatabase:
+          name: wage3-db
+          property: connectionString
+
+      # Hides the debug log line that prints login codes
+      - key: RUST_LOG
+        value: wage3_backend=info,tower_http=info,sqlx=warn
+
+      - key: JWT_SECRET
+        generateValue: true
+      - key: JWT_REFRESH_SECRET
+        generateValue: true
+      - key: HMAC_SECRET
+        generateValue: true
+
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: GOOGLE_REDIRECT_URI # https://<service>.onrender.com/api/v1/auth/google/callback
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+
+      - key: RPC_URL
+        sync: false
+      - key: CHAIN_ID
+        value: "84532"
+      - key: BATCHER_ADDRESS
+        sync: false
+      - key: BATCHER_START_BLOCK
+        value: "52058980"
+      - key: INDEXER_MAX_RANGE
+        value: "200"
+
+      - key: TOKEN_ADDRESS
+        sync: false
+      - key: TOKEN_SYMBOL
+        value: USDC
+      - key: TOKEN_DECIMALS
+        value: "6"
