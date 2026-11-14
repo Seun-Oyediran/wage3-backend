@@ -15,6 +15,7 @@ use tracing_subscriber::EnvFilter;
 
 use crate::{
     config::Config,
+    email::Mailer,
     google::GoogleOidc,
     handlers::{app_routes, auth::jobs::spawn_cleanup_job, fallback::not_found},
     state::AppState,
@@ -22,6 +23,7 @@ use crate::{
 
 mod claims;
 mod config;
+mod email;
 mod error;
 mod extractors;
 mod feature_flags;
@@ -76,6 +78,8 @@ async fn main() {
         .await
         .expect("Failed to set up Google sign-in");
 
+    let mailer = Mailer::new(&config).expect("Failed to set up email");
+
     // Browsers send Origin without a trailing slash, so FRONTEND_URL must match that.
     let frontend_origin = config
         .frontend_url
@@ -96,7 +100,7 @@ async fn main() {
         .allow_headers([AUTHORIZATION, CONTENT_TYPE])
         .max_age(Duration::from_secs(60 * 60));
 
-    let state = AppState::new(config, pool, google);
+    let state = AppState::new(config, pool, google, mailer);
 
     let tracing_layer = ServiceBuilder::new().layer(TraceLayer::new_for_http());
 

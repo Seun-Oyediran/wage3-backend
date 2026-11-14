@@ -20,6 +20,9 @@ pub struct Config {
     pub google_redirect_uri: String,
     pub frontend_url: String,
 
+    pub resend_api_key: String,
+    pub email_from: String,
+
     pub rpc_url: String,
     pub chain_id: i64,
     pub token_address: Address,
@@ -75,6 +78,11 @@ impl Config {
         let frontend_url =
             env::var("FRONTEND_URL").map_err(|_| "Frontend url is compulsory".to_string())?;
 
+        let resend_api_key = env::var("RESEND_API_KEY")
+            .map_err(|_| "Resend api key is compulsory".to_string())?;
+        let email_from =
+            env::var("EMAIL_FROM").map_err(|_| "Email from is compulsory".to_string())?;
+
         let rpc_url = env::var("RPC_URL").map_err(|_| "Rpc url is compulsory".to_string())?;
         let chain_id = env::var("CHAIN_ID")
             .unwrap_or_else(|_| "84532".to_string())
@@ -122,6 +130,8 @@ impl Config {
             google_client_secret,
             google_redirect_uri,
             frontend_url,
+            resend_api_key,
+            email_from,
             rpc_url,
             chain_id,
             batcher_start_block,

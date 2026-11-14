@@ -44,11 +44,15 @@ pub async fn email_start(state: &AppState, req: EmailStartRequest) -> Result<(),
 
     tx.commit().await?;
 
-    tracing::debug!("login code for {}: {}", req.email, code);
+    tracing::debug!("login codes for {}: {}", req.email, code);
 
-    //??TODO
-    // SEND CODE TO USER EMAIL
-    //??TODO
+    // The code is saved first, so a failed send only costs the user the one-minute wait.
+    if let Err(e) = state.mailer.send_login_code(&req.email, &code).await {
+        tracing::error!("failed to send login code to {}: {}", req.email, e);
+        return Err(AppError::ServiceUnavailable(
+            "We couldn't send your code. Please try again in a minute".to_string(),
+        ));
+    }
 
     Ok(())
 }
