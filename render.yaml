@@ -45,6 +45,11 @@ services:
       - key: FRONTEND_URL
         value: https://wage3-frontend.vercel.app
 
+      - key: RESEND_API_KEY
+        sync: false
+      - key: EMAIL_FROM
+        value: Wage3 <login@rndrealm.com>
+
       - key: RPC_URL
         sync: false
       - key: CHAIN_ID
