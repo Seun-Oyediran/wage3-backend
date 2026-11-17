@@ -10,7 +10,7 @@ use crate::config::Config;
 const RESEND_URL: &str = "https://api.resend.com/emails";
 
 /// Embedded at compile time, so the binary needs no template files at runtime.
-const LOGIN_CODE_HTML: &str = include_str!("templates/login-code.html");
+const LOGIN_CODE_HTML: &str = include_str!("templates/new-template.html");
 
 #[derive(Debug, Clone)]
 pub struct Mailer {
@@ -49,10 +49,14 @@ impl Mailer {
             subject: "Your Wage3 log-in code",
             // Plain-text fallback for clients that don't render HTML; it also helps spam scores.
             text: format!(
-                "Your Wage3 log-in code is {code}\n\n\
-                 This code expires in 10 minutes and can only be used once.\n\n\
-                 If you didn't ask for this, you can ignore this email. Wage3 will never ask \
-                 you for this code by phone, chat or email."
+                "To continue setting up your Wage3 account, please verify your email \
+                 address using the code below:\n\n\
+                 {code}\n\n\
+                 This code will expire in 10 minutes. If you didn't initiate this request, \
+                 you can safely ignore this email.\n\n\
+                 Best regards,\n\
+                 The wage3 Team\n\n\
+                 Questions? Reach us at hello@wage3.com"
             ),
             // `code` is six digits, so it needs no HTML escaping.
             html: LOGIN_CODE_HTML.replace("{{code}}", code),
