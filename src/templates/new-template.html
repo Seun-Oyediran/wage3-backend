@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light">
+    <meta name="supported-color-schemes" content="light">
+    <!-- Only some clients (Apple Mail, iOS Mail) load web fonts; the rest use the fallback stacks below. -->
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono&display=swap" rel="stylesheet">
+    <!-- Inter Display is hosted by the frontend (frontend/public/fonts/inter-display). -->
+    <style>
+      @font-face {
+        font-family: 'Inter Display';
+        src: url('https://wage3-frontend.vercel.app/fonts/inter-display/InterDisplay-Medium.woff2') format('woff2');
+        font-weight: 500;
+        font-style: normal;
+      }
+      @font-face {
+        font-family: 'Inter Display';
+        src: url('https://wage3-frontend.vercel.app/fonts/inter-display/InterDisplay-SemiBold.woff2') format('woff2');
+        font-weight: 600;
+        font-style: normal;
+      }
+    </style>
+    <title>Your Wage3 log-in code</title>
+  </head>
+  <!--
+    Wage3 log-in code email. Placeholder: {{code}} (6 digits), used twice.
+    Email-safe: tables and inline styles, no external CSS. Sent by src/email.rs.
+    Original class-based design is in new.css.
+  -->
+  <body style="margin:0;padding:0;background-color:#ffffff">
+    <!-- Inbox preview text, hidden in the body -->
+    <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:transparent;mso-hide:all">
+      Your Wage3 log-in code is {{code}}. It expires in 10 minutes.
+    </div>
+
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff">
+      <tbody><tr>
+        <td align="center" style="padding:40px 0">
+
+          <!-- .app_body_con -->
+          <table role="presentation" width="536" cellpadding="0" cellspacing="0" border="0" style="max-width:536px;width:100%;border:1px solid #eaecf0;border-collapse:separate">
+            <tbody>
+
+              <!-- .app_body_con__header -->
+              <tr>
+                <td style="padding:26px 36px">
+                  <!-- Logo placeholder (.app_body_con__header__logo). Swap for <img src="https://…" width="116" height="51" alt="Wage3"> once hosted. -->
+                  <table role="presentation" cellpadding="0" cellspacing="0" border="0">
+                    <tbody><tr>
+                      <td width="116" height="51" style="width:116px;height:51px;background-color:#ebebeb;font-size:0;line-height:0">&nbsp;</td>
+                    </tr></tbody>
+                  </table>
+                </td>
+              </tr>
+
+              <!-- .app_body_con__body -->
+              <tr>
+                <td style="padding:32px;background-color:#1e1e1e">
+
+                  <!-- Logo placeholder (.app_body_con__body__logo). Swap for a hosted <img> 120x120. -->
+                  <table role="presentation" align="center" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 24px auto">
+                    <tbody><tr>
+                      <td width="120" height="120" style="width:120px;height:120px;font-size:0;line-height:0">&nbsp;</td>
+                    </tr></tbody>
+                  </table>
+
+                  <p style="font-family:'Inter Display','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-weight:600;font-size:16px;letter-spacing:0;line-height:24px;color:#333333;margin:0 0 24px 0">
+                    Confirm Email
+                  </p>
+
+                  <p style="font-family:'Inter Display','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-weight:500;font-size:16px;letter-spacing:0;line-height:24px;color:#475467;margin:0 0 24px 0">
+                    To continue setting up your Wage3 account, please verify your email address using the code below:
+                  </p>
+
+                  <!-- The code: one text run so it copies as six digits, spaced out for reading -->
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:24px">
+                    <tbody><tr>
+                      <td align="center" valign="middle" height="104" style="height:104px;background-color:#f9fafb;border-radius:6px;padding:0 16px">
+                        <span style="font-family:'DM Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-weight:400;font-size:48px;line-height:56px;letter-spacing:0.3em;margin-right:-0.3em;color:#1c232b;font-variant-numeric:tabular-nums;white-space:nowrap">{{code}}</span>
+                      </td>
+                    </tr></tbody>
+                  </table>
+
+                  <p style="font-family:'Inter Display','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-weight:500;font-size:16px;letter-spacing:0;line-height:24px;color:#475467;margin:0">
+                    This code will expire in 10 minutes. If you didn’t initiate this request, you can safely ignore this email.
+                    <br><br>
+                    Best regards,<br>
+                    The wage3 Team
+                  </p>
+
+                </td>
+              </tr>
+
+              <!-- .app_body_con__footer -->
+              <tr>
+                <td style="padding:32px">
+                  <p style="font-family:'Inter Display','Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-weight:500;font-size:14px;letter-spacing:0;line-height:21px;color:#344054;margin:0">
+                    This email was sent because you requested for a One Time Password. If you did not request for this please ignore or reach out to us at
+                    <a href="mailto:hello@wage3.com" style="color:#005864;text-decoration:none">hello@wage3.com</a>
+                  </p>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+
+        </td>
+      </tr></tbody>
+    </table>
+  </body>
+</html>
